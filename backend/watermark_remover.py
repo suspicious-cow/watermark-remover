@@ -145,8 +145,8 @@ def save_mask(mask: np.ndarray, path: Path) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Automatically remove watermarks from one or more images.")
-    parser.add_argument("inputs", nargs="+", help="Image paths or glob patterns.")
-    parser.add_argument("-o", "--output-dir", default="backend/outputs", help="Where to save cleaned images.")
+    parser.add_argument("inputs", nargs="*", default=["backend/process/*"], help="Image paths or glob patterns. Defaults to backend/process/*")
+    parser.add_argument("-o", "--output-dir", default="backend/output", help="Where to save cleaned images.")
     parser.add_argument("--save-masks", action="store_true", help="Save the detected masks for inspection.")
     parser.add_argument("--overwrite", action="store_true", help="Allow overwriting existing outputs.")
     parser.add_argument("--inpaint-radius", type=float, default=3.0, help="Inpaint radius passed to OpenCV.")
@@ -180,7 +180,7 @@ def main() -> None:
         resized_mask = cv2.resize(mask, (img.shape[1], img.shape[0]), interpolation=cv2.INTER_NEAREST)
         cleaned = inpaint_image(img, resized_mask, radius=args.inpaint_radius)
 
-        out_name = f"{path.stem}_cleaned{path.suffix}"
+        out_name = f"{path.stem}-nomark{path.suffix}"
         out_path = output_dir / out_name
         if out_path.exists() and not args.overwrite:
             raise SystemExit(f"Refusing to overwrite existing file: {out_path}")

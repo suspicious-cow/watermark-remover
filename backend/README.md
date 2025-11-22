@@ -8,11 +8,14 @@ Python CLI that automatically detects and removes visible watermarks from one or
 conda activate watermark   # ensure you're in the provided env
 pip install -r backend/requirements.txt
 
-# process images; results go to backend/outputs by default
-python backend/watermark_remover.py path/to/image1.jpg path/to/other/*.png -o backend/outputs
+# place images in backend/process/, then run:
+python backend/watermark_remover.py
+
+# or specify custom input/output:
+python backend/watermark_remover.py path/to/image1.jpg path/to/other/*.png -o custom/output
 ```
 
-Outputs are saved next to the script (or wherever you point `--output-dir`) using the original filename plus `_cleaned`. Optional masks are saved with `_mask.png` when you pass `--save-masks`.
+By default, the script processes all images in `backend/process/` and saves cleaned versions to `backend/output/` with `-nomark` appended to the filename (e.g., `photo.jpg` → `photo-nomark.jpg`). Optional masks are saved with `_mask.png` when you pass `--save-masks`.
 
 ## Notes
 
